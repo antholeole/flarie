@@ -1,9 +1,9 @@
-[workspace]
-members = [
-  "flarie",
-  "flarie-entry"
-]
+[package]
+name = "flarie"
+version = "0.1.0"
+authors = ["antholeole <antholeinik@gmail.com>"]
+edition = "2018"
 
-[patch.crates-io]
-flarie = { path = "flarie" }
-flarie-entry = { path = "flarie-entry" }
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
