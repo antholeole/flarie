@@ -3,3 +3,7 @@ members = [
   "flarie",
   "flarie-entry"
 ]
+
+[patch.crates-io]
+flarie = { path = "flarie" }
+flarie-entry = { path = "flarie-entry" }
