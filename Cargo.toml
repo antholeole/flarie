@@ -2,7 +2,13 @@
 name = "flarie"
 version = "0.1.0"
 authors = ["antholeole <antholeinik@gmail.com>"]
+license = "MIT"
+description = "Framework for running on cloudflare workers"
+homepage = "https://github.com/antholeole/flarie"
 edition = "2018"
+documentation = "https://github.com/antholeole/flarie"
+repositiory = "https://github.com/antholeole/flarie.git"
+readme = "./README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
