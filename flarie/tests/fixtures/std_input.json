@@ -1,0 +1,10 @@
+{
+    "path": "/this/is/awesome/",
+    "body": {
+        "name": "anthony",
+        "age": 19
+    },
+    "headers": {
+        "token": "kasokd131920sa9ka"
+    }
+}
