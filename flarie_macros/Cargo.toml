@@ -14,7 +14,3 @@ repositiory = "https://github.com/antholeole/flarie.git"
 
 [lib]
 proc-macro = true
-
-[[bin]]
-name = "flarie_macros"
-path = "src/main.rs"
