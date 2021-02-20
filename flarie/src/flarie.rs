@@ -1,3 +1,5 @@
+use crate::route::Route;
+
 struct Request {
     path: String,
 }
@@ -6,6 +8,8 @@ pub struct Flarie {
     found: bool,
     request: Request,
 }
+
+pub type Path<T> = T;
 
 impl Flarie {
     pub fn new(obj: &str) -> Self {
@@ -17,11 +21,17 @@ impl Flarie {
         }
     }
 
-    pub fn get(mut self, route: &str, exe: impl Fn()) -> Self {
-        if route == self.request.path {
-            exe();
-            self.found = true;
+    pub fn route<T>(mut self, get_route: impl Fn() -> Route<T>) -> Self {
+        if self.found {
+            return self;
         }
+
+        let route = get_route();
+        if route.matcher(&self.request.path) {
+            self.found = true;
+            route.run();
+        }
+
         self
     }
 }

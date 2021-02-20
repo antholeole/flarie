@@ -1,7 +1,8 @@
 [workspace]
 members = [
   "flarie",
-  "flarie-macros",
+  "flarie_macros",
+  "scratch"
 ]
 
 [patch.crates-io]

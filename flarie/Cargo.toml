@@ -15,9 +15,6 @@ readme = "./README.md"
 [dependencies]
 thiserror = "1.0"
 
-[lib]
-proc-macro = true
-
 [[bin]]
 name = "flarie"
 path = "src/main.rs"

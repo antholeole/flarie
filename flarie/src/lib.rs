@@ -1,9 +1,10 @@
 mod flarie;
-mod routes;
+mod response;
+mod route;
+pub use flarie::{Flarie, Path};
+pub use response::Response;
+pub use route::Route;
 
-fn hello() -> String {
-    return "hi".to_owned();
-}
 /*
 
 #[get("/")]
