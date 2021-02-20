@@ -1,20 +1,11 @@
-/*
-extern crate proc_macro;
+pub trait IntoRoute<T, Args = ()> {
+    type Result;
 
-macro_rules! method_type {
-    ($type:expr) => {
-        println!(stringify!($type))
-    };
+    fn invoke(&self, receiver: &T, args: Args) -> Self::Result;
 }
 
-method_type! {
-    Get,
-    Post,
-    Put,
-    Delete,
-    Patch,
-}
-
-#[post()]
-pub fn test() {}
-*/
+// ALREADY NATIVE WAY:
+// have args tuple be generic over items that implement 
+// IntoRouteParam type -> then, write macro for each # of input route param
+// and "wire" to correct place
+pub 
