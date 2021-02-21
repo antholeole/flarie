@@ -23,10 +23,14 @@ pub fn parse_route_fn(route_fn: ItemFn, meta_data: AttributeArgs) -> syn::Result
         }
     }).collect::<syn::Result<Vec::<LitStr>>>()?.remove(0);
 
+    //TODO get this type and validate
+    let path_params = syn::parse_str::<TokenStream>("(i32, String)").unwrap();
 
     Ok(quote! {
-        pub fn #fn_name() -> Route {
-            fn #local_private_fn() -> Response 
+        pub fn #fn_name(
+            data: RouteData<#path_params>
+        ) -> Route<#path_params, fn(RouteData<#path_params>) -> Response> {
+            fn #local_private_fn(data: RouteData<#path_params>) -> Response 
                 #block
             Route::new(#local_private_fn, #path_to_match)
         }
