@@ -8,9 +8,9 @@ enum Matcher<'a> {
 }
 
 pub struct RouteData<T> {
-    path_params: Option<T>,
+    pub path_params: Option<T>,
     get_path_params: fn(Vec<&str>) -> Option<T>,
-    body: Option<String>,
+    pub body: Option<String>,
 }
 
 impl <T> RouteData<T> {
@@ -33,14 +33,14 @@ impl <T> RouteData<T> {
     }
 }
 
-pub struct Route<T, F> where F: Fn(RouteData<T>) -> Response {
-    executor: F,
+pub struct Route<T> {
+    executor: fn(RouteData<T>) -> Response,
     path: &'static str,
     route_data: RouteData<T>
 }
 
-impl<T, F> Route<T, F> where F: Fn(RouteData<T>) -> Response {
-    pub fn new(executor: F, match_path_params: fn(Vec<&str>) -> Option<T>, path: &'static str) -> Route<T, F> {
+impl<T> Route<T> {
+    pub fn new(executor: fn(RouteData<T>) -> Response, match_path_params: fn(Vec<&str>) -> Option<T>, path: &'static str) -> Route<T> {
         Route {
             executor,
             path,
@@ -50,10 +50,11 @@ impl<T, F> Route<T, F> where F: Fn(RouteData<T>) -> Response {
 
     //returns Some(path_params) if matches, None if doesn't
     pub fn matcher(&self, match_to: &str) -> Option<T> {
-        let t = match_to.split_terminator("/").zip_longest(self.path.split("/")).map(|pair| {
+        //will short circuit if a path does not match
+        let t = match_to.split_terminator('/').zip_longest(self.path.split('/')).map(|pair| {
             match pair {
                 Both(input_path, should_be_path) => {
-                    if should_be_path.starts_with("{") && should_be_path.ends_with("}") {
+                    if should_be_path.starts_with('{') && should_be_path.ends_with('}') {
                         Ok(Matcher::PathParam(input_path))
                     } else if should_be_path == input_path {
                         Ok(Matcher::Constant)
@@ -65,10 +66,7 @@ impl<T, F> Route<T, F> where F: Fn(RouteData<T>) -> Response {
             }
         }).filter(|v| { //filter out all non-path params, as we are done w/ them
             match v {
-                Ok(matcher) => match matcher {
-                    Matcher::PathParam(_) => true,
-                    _ => false
-                },
+                Ok(matcher) => matches!(matcher, Matcher::PathParam(_)),
                 _ => true //dont want to filter out our error varient or else we wont short circuit
             }
         }).map(|v| { //turn all path params into inner
@@ -87,12 +85,13 @@ impl<T, F> Route<T, F> where F: Fn(RouteData<T>) -> Response {
         }
     }
 
-    pub fn enrich(mut self, body: Option<String>) {
+    pub fn enrich(mut self, body: Option<String>, path_params: T) -> Self {
         self.route_data.body = body;
+        self.route_data.path_params = Some(path_params);
+        self
     }
 
-    pub fn run(mut self) -> Response {
-        //TODO cleanup unwrap
+    pub fn run(self) -> Response {
         (self.executor)(self.route_data)
     }
 }

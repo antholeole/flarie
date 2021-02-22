@@ -1,7 +1,8 @@
 extern crate flarie;
 extern crate proc_macro;
 extern crate syn;
-extern crate quote;
+extern crate proc_quote;
+
 mod create_fn;
 use proc_macro::TokenStream;
 

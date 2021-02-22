@@ -1,6 +1,4 @@
-use crate::route::{Route, RouteData};
-use crate::response::Response;
-use crate::errors::FlarieError;
+use crate::route::Route;
 
 struct Request {
     path: String,
@@ -23,17 +21,15 @@ impl Flarie {
         }
     }
 
-    pub fn route<T, F: Fn(RouteData<T>) -> Response>
-    (mut self, get_route: impl Fn(RouteData<T>) -> Route<T, F>) -> Self {
+    pub fn route<T>(mut self, get_route: impl Fn() -> Route<T>) -> Self {
         if self.found {
             return self;
         }
 
-        let mut route = get_route();
+        let route = get_route();
         if let Some(path_params) = route.matcher(&self.request.path) {
             self.found = true;
-            route.enrich(RouteData::full(path_params, None));
-            route.run();
+            route.enrich(Some("body".to_string()), path_params).run();
         }
 
         self
