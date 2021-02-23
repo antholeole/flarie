@@ -9,8 +9,6 @@ pub struct Flarie {
     request: Request,
 }
 
-pub type Path<T> = T;
-
 impl Flarie {
     pub fn new(obj: &str) -> Self {
         Flarie {
