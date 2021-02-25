@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 flarie = { path = "../flarie" }
 flarie_macros = { path = "../flarie_macros" }
+uuid = "0.8.2"
+reqwest = "0.11"

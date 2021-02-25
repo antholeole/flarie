@@ -21,7 +21,7 @@ macro_rules! build_methods {
             let metadata = parse_macro_input!(metadata as AttributeArgs);
             let input = parse_macro_input!(input as ItemFn);
 
-            create_fn::parse_route_fn(input, metadata, $curr)
+            create_fn::parse_route_fn(input, metadata, stringify!($curr))
                 .unwrap_or_else(|err| err.to_compile_error())
                 .into()
         }
